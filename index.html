@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>MindSpring — AI Mental Wellness</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Top bar -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo">MS</div>
+        <div class="title">
+          <div class="app-name">🌱 MindSpring</div>
+          <div class="app-sub">Youth Mental Wellness</div>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="icon-btn" id="searchBtn"><i class="fa fa-search"></i></button>
+        <button class="icon-btn" id="profileBtn"><i class="fa fa-user-circle"></i></button>
+      </div>
+    </header>
+
+    <!-- Viewport: screens slide horizontally -->
+    <main class="viewport">
+      <div class="screens" id="screens">
+        <!-- Home / Feed-like card -->
+        <section class="screen" id="screen-home" data-index="0">
+          <div class="card hero">
+            <h2>Welcome back 👋</h2>
+            <p class="muted">Quick check-ins, empathetic AI support, and optional clinician connection — private by default.</p>
+            <div class="hero-actions">
+              <button class="btn primary" data-target="mood"><i class="fa-regular fa-face-smile"></i> Mood Check</button>
+              <button class="btn outline" data-target="chat"><i class="fa-solid fa-comments"></i> Talk to Mindy</button>
+            </div>
+          </div>
+
+          <div class="card feed">
+            <h3>Daily Tips</h3>
+            <div class="tip">If you're overwhelmed, try 5 slow breaths (4-4-4). Small steps matter.</div>
+            <div class="tip">Write one sentence: "Right now, I need..." — it helps reduce stress.</div>
+          </div>
+        </section>
+
+        <!-- Mood -->
+        <section class="screen" id="screen-mood" data-index="1">
+          <div class="card">
+            <h2>Mood Check</h2>
+            <p class="muted">Quickly tell Mindy how you feel — it's private to your device unless you share.</p>
+
+            <div class="mood-row">
+              <input id="mood-input" type="text" placeholder="e.g. anxious, happy, tired" />
+              <button id="save-mood" class="btn primary"><i class="fa-solid fa-plus"></i></button>
+            </div>
+
+            <div class="mood-log-card">
+              <h4>Your mood log</h4>
+              <ul id="mood-list" class="mood-list"></ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Chat -->
+        <section class="screen" id="screen-chat" data-index="2">
+          <div class="card chat-card">
+            <h2>Chat with Mindy</h2>
+            <div id="chat-messages" class="chat-messages" aria-live="polite">
+              <!-- initial AI message -->
+              <div class="msg ai bounce">
+                <div class="avatar ai-avatar"><i class="fa-solid fa-robot"></i></div>
+                <div class="bubble">Hi — I'm Mindy. Tell me one word about how you're feeling right now.</div>
+              </div>
+            </div>
+
+            <div class="chat-input">
+              <input id="chat-input" placeholder="Type a message..." />
+              <button id="send-chat" class="btn circle"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Doctor -->
+        <section class="screen" id="screen-doctor" data-index="3">
+          <div class="card">
+            <h2>Connect with a Doctor</h2>
+            <p class="muted">Only share details when you're ready. You can stay anonymous.</p>
+
+            <form id="doctor-form" class="doctor-form">
+              <div class="form-row">
+                <input id="doc-name" type="text" placeholder="Name (optional)" />
+                <input id="doc-email" type="email" placeholder="Email (optional)" />
+              </div>
+              <input id="doc-location" type="text" placeholder="Location (city)" />
+              <textarea id="doc-issue" placeholder="Briefly describe the issue"></textarea>
+              <div class="form-actions">
+                <button type="submit" class="btn primary"><i class="fa-solid fa-share-nodes"></i> Share Summary</button>
+                <button type="button" id="generate-id" class="btn outline">Generate Patient ID</button>
+              </div>
+              <div id="generated-id" class="muted small"></div>
+            </form>
+          </div>
+        </section>
+
+        <!-- Payment -->
+        <section class="screen" id="screen-payment" data-index="4">
+          <div class="card">
+            <h2>Secure Payment</h2>
+            <p class="muted">Demo payments only — no real transactions.</p>
+
+            <form id="payment-form" class="payment-form">
+              <input id="card-number" type="text" maxlength="16" placeholder="Card Number" />
+              <div class="form-row">
+                <input id="expiry" type="text" maxlength="5" placeholder="MM/YY" />
+                <input id="cvv" type="password" maxlength="3" placeholder="CVV" />
+              </div>
+              <button type="submit" class="btn primary"><i class="fa-solid fa-lock"></i> Pay Now</button>
+            </form>
+
+            <div id="payment-success" class="success hidden">
+              <h4>Payment confirmed ✅</h4>
+              <p class="muted">Join your video consultation:</p>
+              <a id="video-link" class="btn outline" href="https://meet.google.com" target="_blank" rel="noopener"><i class="fa-solid fa-video"></i> Join Video</a>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Floating Add Mood (quick action) -->
+    <button id="fab" class="fab" title="Quick mood">+</button>
+
+    <!-- Bottom navigation -->
+    <nav class="bottom-nav">
+      <button class="nav-btn active" data-index="0"><i class="fa-solid fa-house"></i><span>Home</span></button>
+      <button class="nav-btn" data-index="1"><i class="fa-regular fa-face-smile"></i><span>Mood</span></button>
+      <button class="nav-btn" data-index="2"><i class="fa-solid fa-comments"></i><span>Chat</span></button>
+      <button class="nav-btn" data-index="3"><i class="fa-solid fa-user-md"></i><span>Doctor</span></button>
+      <button class="nav-btn" data-index="4"><i class="fa-solid fa-credit-card"></i><span>Pay</span></button>
+    </nav>
+  </div>
+
+  <!-- Tiny toast -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
